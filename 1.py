@@ -1,58 +1,63 @@
-# task 1
+# List of reviews
+reviews = [
+    "This product is really good. I'm impressed with its quality.",
+    "The performance of this product is excellent. Highly recommended!",
+    "I had a bad experience with this product. It didn't meet my expectations.",
+    "Poor quality product. Wouldn't recommend it to anyone.",
+    "The product was average. Nothing extraordinary about it."
+]
 
-python_reviews = [ "This product is really good. I'm impressed with its quality.", 
-                  "The performance of this product is excellent. Highly recommended!", 
-                  "I had a bad experience with this product. It didn't meet my expectations.", 
-                  "Poor quality product. Wouldn't recommend it to anyone.", 
-                  "The product was average. Nothing extraordinary about it." ]
-def find_text(text):
-    if text == ("good", "excellent", "bad", "poor", "average"):
-        index = text.find(text)
-        if index == 'good':
-            return f'the keywords {text} was found in the reviews'
-        elif index ==  "excellent":
-            return f'the keywords {text} was found in the reviews'
-        elif index == "bad":
-            return f'the keywords {text} was found in the reviews'
-        elif index == "poor":
-            return f'the keywords {text} was found in the reviews'
-        elif index == "average":
-            return f'the keywords {text} was found in the reviews'
-        else:
-            return 'keyword not found'
+# List of keywords to highlight
+keywords = ["good", "excellent", "bad", "poor", "average"]
 
-while True:
-
-    text_input = input('What keyword are you looking for? ')
-
-    result = find_text(text_input)
-    print(result).upper()
-
-    continue_search_input = input('do you want to search for more text? (y/n) ').lower()
-    if continue_search_input != 'y':
-        break
-
-
-
-# task 2 
-
-positive_words = ["good", "excellent", "great", "awesome", "fantastic", "superb", "amazing"] 
+# List of positive and negative words
+positive_words = ["good", "excellent", "great", "awesome", "fantastic", "superb", "amazing"]
 negative_words = ["bad", "poor", "terrible", "horrible", "awful", "disappointing", "subpar"]
 
-s = [ "This product is really good. I'm impressed with its quality.", 
-        "The performance of this product is excellent. Highly recommended!", 
-        "I had a bad experience with this product. It didn't meet my expectations.", 
-        "Poor quality product. Wouldn't recommend it to anyone.", 
-        "The product was average. Nothing extraordinary about it." ].split()
-def words(s):
-    counter = []
-    for i in set(s):
-        counter.append((i,s.count(i)))
-    return counter
-print(words(s))
+# Task 1: Highlight Keywords
+def highlight_keywords(reviews, keywords):
+    highlighted_reviews = []
+    for review in reviews:
+        modified_review = review
+        for keyword in keywords:
+            modified_review = modified_review.replace(keyword, keyword.upper())
+        highlighted_reviews.append(modified_review)
+    return highlighted_reviews
 
+# Task 2: Tally Sentiments
+def tally_sentiments(reviews, positive_words, negative_words):
+    positive_count = 0
+    negative_count = 0
+    for review in reviews:
+        for word in positive_words:
+            positive_count += review.lower().split().count(word)
+        for word in negative_words:
+            negative_count += review.lower().split().count(word)
+    return positive_count, negative_count
 
-# task 3
+# Task 3: Review Summary
+def summarize_reviews(reviews, length=30):
+    summaries = []
+    for review in reviews:
+        if len(review) > length:
+            cutoff = review.rfind(' ', 0, length)
+            if cutoff == -1:
+                cutoff = length
+            summary = review[:cutoff].strip() + '...'
+        else:
+            summary = review
+        summaries.append(summary)
+    return summaries
 
-string_summary = python_reviews[:31]
-print(string_summary)
+# Run tasks
+highlighted_reviews = highlight_keywords(reviews, keywords)
+for review in highlighted_reviews:
+    print(review)
+
+positive_count, negative_count = tally_sentiments(reviews, positive_words, negative_words)
+print(f"Total positive words: {positive_count}")
+print(f"Total negative words: {negative_count}")
+
+summaries = summarize_reviews(reviews)
+for summary in summaries:
+    print(summary)
